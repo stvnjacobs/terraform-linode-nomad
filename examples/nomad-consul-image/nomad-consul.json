@@ -9,7 +9,7 @@
   "builders": [
     {
       "name": "ubuntu18-image",
-      "image_label": "nomad-consul-ubuntu18-{{isotime | clean_resource_name}}",
+      "image_label": "nomad-consul-ubuntu18-{{isotime}}",
       "image_description": "An example of how to build an Ubuntu 18.04 image that has Nomad and Consul installed",
       "instance_type": "g6-nanode-1",
       "region": "{{user `linode_region`}}",
@@ -20,7 +20,7 @@
     },
     {
       "name": "centos8-image",
-      "image_label": "nomad-consul-centos8-{{isotime | clean_resource_name}}",
+      "image_label": "nomad-consul-centos8-{{isotime}}",
       "image_description": "An example of how to build an CentOS 8 image that has Nomad and Consul installed",
       "instance_type": "g6-nanode-1",
       "region": "{{user `linode_region`}}",
@@ -31,7 +31,7 @@
     },
     {
       "name": "debian10-image",
-      "image_label": "nomad-consul-debian10-{{isotime | clean_resource_name}}",
+      "image_label": "nomad-consul-debian10-{{isotime}}",
       "image_description": "An example of how to build an Debian 10 (Buster) image that has Nomad and Consul installed",
       "instance_type": "g6-nanode-1",
       "region": "{{user `linode_region`}}",
