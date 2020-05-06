@@ -1,0 +1,80 @@
+{
+  "min_packer_version": "0.12.0",
+  "variables": {
+    "linode_region": "us-east",
+    "nomad_version": "0.9.1",
+    "consul_module_version": "v0.7.4",
+    "consul_version": "1.5.1"
+  },
+  "builders": [
+    {
+      "name": "ubuntu18-image",
+      "image_label": "nomad-consul-ubuntu18-{{isotime | clean_resource_name}}",
+      "image_description": "An example of how to build an Ubuntu 18.04 image that has Nomad and Consul installed",
+      "instance_type": "g6-nanode-1",
+      "region": "{{user `linode_region`}}",
+      "image": "linode/ubuntu18.04",
+      "ssh_username": "root",
+      "swap_size": 256,
+      "type": "linode"
+    },
+    {
+      "name": "centos8-image",
+      "image_label": "nomad-consul-centos8-{{isotime | clean_resource_name}}",
+      "image_description": "An example of how to build an CentOS 8 image that has Nomad and Consul installed",
+      "instance_type": "g6-nanode-1",
+      "region": "{{user `linode_region`}}",
+      "image": "linode/centos8",
+      "ssh_username": "root",
+      "swap_size": 256,
+      "type": "linode"
+    },
+    {
+      "name": "debian10-image",
+      "image_label": "nomad-consul-debian10-{{isotime | clean_resource_name}}",
+      "image_description": "An example of how to build an Debian 10 (Buster) image that has Nomad and Consul installed",
+      "instance_type": "g6-nanode-1",
+      "region": "{{user `linode_region`}}",
+      "image": "linode/debian10",
+      "ssh_username": "root",
+      "swap_size": 256,
+      "type": "linode"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "apt install -yq git"
+      ],
+      "only": [
+        "debian10-image",
+        "ubuntu18-image"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum install -y git"
+      ],
+      "only": [
+        "centos8-image"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{template_dir}}/../../../terraform-linode-nomad",
+      "destination": "/tmp",
+      "pause_before": "30s"
+    },
+      {
+      "type": "shell",
+      "environment_vars": [
+        "NOMAD_VERSION={{user `nomad_version`}}",
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "CONSUL_MODULE_VERSION={{user `consul_module_version`}}"
+      ],
+      "script": "{{template_dir}}/setup_nomad_consul.sh"
+    }
+  ]
+}
