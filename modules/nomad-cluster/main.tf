@@ -23,17 +23,6 @@ resource "linode_instance" "nomad_instance" {
     # TODO: configurable size
     size = 10000
     image  = var.image_id
-
-    authorized_keys = var.ssh_keys
-    # TODO: ssh user var
-    # authorized_users = [ "${data.linode_profile.me.username}" ]
-  }
-
-  disk {
-    label = "boot"
-    # TODO: configurable size
-    size = 10000
-    image  = var.image_id
     filesystem = "ext4"
 
     authorized_keys = var.ssh_keys
